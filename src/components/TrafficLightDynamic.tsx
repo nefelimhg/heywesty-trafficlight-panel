@@ -6,6 +6,7 @@ export default function TrafficLightDynamic({
   colors = [],
   bgColor = 'grey',
   emptyColor = 'black',
+  inactiveColor = 'darkgrey', // New property for inactive light colors
   onClick,
   horizontal = false,
 }: TrafficLightProps) {
@@ -41,7 +42,7 @@ export default function TrafficLightDynamic({
               width={lightWidth}
               height={height}
               rx="8"
-              fill={light.active ? light.color : emptyColor}
+              fill={light.active ? light.color : getInactiveColor(light.color, inactiveColor)} // Use inactive colors
               style={
                 light.active
                   ? {
@@ -65,6 +66,20 @@ export default function TrafficLightDynamic({
       </g>
     </svg>
   );
+}
+
+// Helper function to determine inactive light colors
+function getInactiveColor(activeColor: string, defaultInactiveColor: string) {
+  switch (activeColor) {
+    case 'red':
+      return 'darkred';
+    case 'orange':
+      return 'darkorange';
+    case 'green':
+      return 'darkgreen';
+    default:
+      return defaultInactiveColor; // Fallback if color is unknown
+  }
 }
 
 function calculateLightPositions(
